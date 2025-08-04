@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
         flexGrow: 1,
         justifyContent: 'center',
         padding: 20,
-        zIndex: 1, // asegúrate de que esté encima del fondo oscuro
+        zIndex: 1,
     },
     title: {
         fontSize: 28,
