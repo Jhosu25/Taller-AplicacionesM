@@ -1,13 +1,5 @@
 import React, { useState } from 'react';
-import {
-    View,
-    Text,
-    TextInput,
-    Button,
-    StyleSheet,
-    ScrollView,
-    ImageBackground
-} from 'react-native';
+import {View, Text, TextInput, Button, StyleSheet, ScrollView, ImageBackground } from 'react-native';
 
 export const LoginFormulario = () => {
     const [name, setName] = useState('');

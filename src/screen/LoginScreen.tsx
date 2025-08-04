@@ -1,13 +1,5 @@
 import React, { useState } from 'react';
-import {
-    ImageBackground,
-    StyleSheet,
-    Text,
-    TextInput,
-    View,
-    Button,
-    SafeAreaView
-} from 'react-native';
+import { ImageBackground, StyleSheet, Text, TextInput, View, Button, SafeAreaView } from 'react-native';
 
 export const LoginScreen = () => {
     const [email, setEmail] = useState('');
