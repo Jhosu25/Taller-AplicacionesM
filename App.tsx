@@ -1,19 +1,15 @@
-import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
-import { Screen6 } from './src/screen/Screen6';
+import { SafeAreaView } from 'react-native';
+import { LoginScreen } from './src/screen/LoginScreen';
+import { LoginFormulario } from './src/screen/LoginFormulario';
 
 
 const App = () => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      {/* <Ejercicio1></Ejercicio1> */}
-      {/* <Screen1></Screen1> */}
-      {/* <Screen2></Screen2> */}
-      {/* <Screen3></Screen3> */}
-      {/* <Screen4></Screen4> */}
-      {/* <Screen5></Screen5> */}
-      <Screen6></Screen6>
+      <LoginScreen />
+      {/* <LoginFormulario></LoginFormulario> */}
     </SafeAreaView>
   );
-}
+};
 
 export default App;
