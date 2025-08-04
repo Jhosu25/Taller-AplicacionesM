@@ -1,5 +1,13 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
+import {
+    ImageBackground,
+    StyleSheet,
+    Text,
+    TextInput,
+    View,
+    Button,
+    SafeAreaView
+} from 'react-native';
 
 export const LoginScreen = () => {
     const [email, setEmail] = useState('');
@@ -10,50 +18,71 @@ export const LoginScreen = () => {
     };
 
     return (
-        <View style={styles.container}>
-            <Text style={styles.title}>Iniciar Sesión</Text>
-
-            <TextInput
-                style={styles.input}
-                placeholder="Correo electrónico"
-                value={email}
-                onChangeText={setEmail}
-                keyboardType="email-address"
-            />
-
-            <TextInput
-                style={styles.input}
-                placeholder="Contraseña"
-                value={password}
-                onChangeText={setPassword}
-                secureTextEntry
-            />
-
-            <Button title="Ingresar" onPress={handleLogin} />
-        </View>
+        <ImageBackground
+            source={require('../../assets/fondoAPP.jpg')}
+            style={styles.fondo}
+            resizeMode="cover"
+        >
+            <SafeAreaView style={styles.safe}>
+                <View style={styles.overlay}>
+                    <Text style={styles.titulo}>Bienvenido a GamerStore</Text>
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Correo electrónico"
+                        value={email}
+                        onChangeText={setEmail}
+                        keyboardType="email-address"
+                    />
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Contraseña"
+                        value={password}
+                        onChangeText={setPassword}
+                        secureTextEntry
+                    />
+                    <Button title="Ingresar" onPress={handleLogin} />
+                </View>
+            </SafeAreaView>
+        </ImageBackground>
     );
 };
 
 const styles = StyleSheet.create({
-    container: {
+    fondo: {
         flex: 1,
-        backgroundColor: '#63BBC7',
-        justifyContent: 'center',
-        padding: 20,
+        width: '100%',
+        height: '100%',
+        backgroundColor: 'rgba(0,0,0,0.5)'
     },
-    title: {
-        fontSize: 28,
-        marginBottom: 30,
+    safe: {
+        flex: 1,
+        justifyContent: 'center',
+    },
+    overlay: {
+        margin: 20,
+        borderRadius: 12,
+        padding: 25,
+        shadowColor: '#000',
+        shadowOpacity: 0.2,
+        shadowOffset: { width: 0, height: 2 },
+    },
+    titulo: {
+        fontSize: 26,
+        fontWeight: 'bold',
+        marginBottom: 25,
         textAlign: 'center',
         color: 'white',
-        fontWeight: 'bold',
+        textShadowColor: '#000',  
+        textShadowOffset: { width: 1, height: 1 }, 
+        textShadowRadius: 2,
     },
     input: {
-        backgroundColor: 'white',
+        backgroundColor: 'rgba(255, 255, 255, 0.2)',
         padding: 12,
-        marginBottom: 20,
-        borderRadius: 10,
+        marginBottom: 15,
+        borderRadius: 8,
         borderWidth: 1,
         borderColor: '#ccc',
+        color: 'white'
     },
 });

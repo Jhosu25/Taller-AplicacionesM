@@ -6,8 +6,8 @@ import { LoginFormulario } from './src/screen/LoginFormulario';
 const App = () => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <LoginScreen />
-      {/* <LoginFormulario></LoginFormulario> */}
+      {/* <LoginScreen /> */}
+      <LoginFormulario></LoginFormulario>
     </SafeAreaView>
   );
 };

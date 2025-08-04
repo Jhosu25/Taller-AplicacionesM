@@ -1,5 +1,13 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, ScrollView } from 'react-native';
+import {
+    View,
+    Text,
+    TextInput,
+    Button,
+    StyleSheet,
+    ScrollView,
+    ImageBackground
+} from 'react-native';
 
 export const LoginFormulario = () => {
     const [name, setName] = useState('');
@@ -13,58 +21,72 @@ export const LoginFormulario = () => {
     };
 
     return (
-        <ScrollView contentContainerStyle={styles.container}>
-            <Text style={styles.title}>Registro</Text>
+        <ImageBackground
+            source={require('../../assets/fondoAPP.jpg')}
+            style={styles.background}
+            resizeMode="cover"
+        >
+            <View style={styles.darkOverlay} />
 
-            <TextInput
-                style={styles.input}
-                placeholder="Nombre"
-                value={name}
-                onChangeText={setName}
-            />
+            <ScrollView contentContainerStyle={styles.container}>
+                <Text style={styles.title}>Registro</Text>
 
-            <TextInput
-                style={styles.input}
-                placeholder="Apellido"
-                value={lastname}
-                onChangeText={setLastname}
-            />
+                <TextInput
+                    style={styles.input}
+                    placeholder="Nombre"
+                    value={name}
+                    onChangeText={setName}
+                />
+                <TextInput
+                    style={styles.input}
+                    placeholder="Apellido"
+                    value={lastname}
+                    onChangeText={setLastname}
+                />
+                <TextInput
+                    style={styles.input}
+                    placeholder="Correo electrónico"
+                    value={email}
+                    onChangeText={setEmail}
+                    keyboardType="email-address"
+                />
+                <TextInput
+                    style={styles.input}
+                    placeholder="Teléfono"
+                    value={phone}
+                    onChangeText={setPhone}
+                    keyboardType="phone-pad"
+                />
+                <TextInput
+                    style={styles.input}
+                    placeholder="Contraseña"
+                    value={password}
+                    onChangeText={setPassword}
+                    secureTextEntry
+                />
 
-            <TextInput
-                style={styles.input}
-                placeholder="Correo electrónico"
-                value={email}
-                onChangeText={setEmail}
-                keyboardType="email-address"
-            />
-
-            <TextInput
-                style={styles.input}
-                placeholder="Teléfono"
-                value={phone}
-                onChangeText={setPhone}
-                keyboardType="phone-pad"
-            />
-
-            <TextInput
-                style={styles.input}
-                placeholder="Contraseña"
-                value={password}
-                onChangeText={setPassword}
-                secureTextEntry
-            />
-
-            <Button title="Registrarse" onPress={handleRegister} />
-        </ScrollView>
+                <Button title="Registrarse" onPress={handleRegister} />
+            </ScrollView>
+        </ImageBackground>
     );
 };
 
 const styles = StyleSheet.create({
+    background: {
+        flex: 1,
+        width: '100%',
+        height: '100%',
+    },
+    darkOverlay: {
+        ...StyleSheet.absoluteFillObject,
+        backgroundColor: 'rgba(0,0,0,0.4)',
+        zIndex: 0,
+    },
     container: {
         flexGrow: 1,
-        backgroundColor: '#63BBC7',
         justifyContent: 'center',
         padding: 20,
+        zIndex: 1, // asegúrate de que esté encima del fondo oscuro
     },
     title: {
         fontSize: 28,
@@ -72,13 +94,17 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         color: 'white',
         fontWeight: 'bold',
+        textShadowColor: '#000',
+        textShadowOffset: { width: 1, height: 1 },
+        textShadowRadius: 2,
     },
     input: {
-        backgroundColor: 'white',
+        backgroundColor: 'rgba(255, 255, 255, 0.2)',
         padding: 12,
         marginBottom: 20,
         borderRadius: 10,
         borderWidth: 1,
         borderColor: '#ccc',
+        color: 'white'
     },
 });
