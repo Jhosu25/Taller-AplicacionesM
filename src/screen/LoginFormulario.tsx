@@ -1,15 +1,40 @@
 import React, { useState } from 'react';
-import {View, Text, TextInput, Button, StyleSheet, ScrollView, ImageBackground } from 'react-native';
+import { View, Text, Button, ScrollView, ImageBackground, Alert } from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import { styles } from '../theme/appTheme';
+import { InputComponent } from '../components/InputComponent';
+
+interface FormRegister {
+    name: string;
+    lastname: string;
+    email: string;
+    phone: string;
+    password: string;
+}
 
 export const LoginFormulario = () => {
-    const [name, setName] = useState('');
-    const [lastname, setLastname] = useState('');
-    const [email, setEmail] = useState('');
-    const [phone, setPhone] = useState('');
-    const [password, setPassword] = useState('');
+    const [formRegister, setFormRegister] = useState<FormRegister>({
+        name: '',
+        lastname: '',
+        email: '',
+        phone: '',
+        password: ''
+    });
+
+    const [hiddenPassword, setHiddenPassword] = useState(true);
+
+    const changeForm = (property: string, value: string) => {
+        setFormRegister({ ...formRegister, [property]: value });
+    };
 
     const handleRegister = () => {
-        alert(`Usuario registrado:\nNombre: ${name} ${lastname}`);
+        const { name, lastname, email, phone, password } = formRegister;
+        if (!name || !lastname || !email || !phone || !password) {
+            Alert.alert('Error', 'Por favor, complete todos los campos');
+            return;
+        }
+        //Alert.alert('Usuario registrado', `Nombre: ${name} ${lastname}`);
+        console.log(formRegister);
     };
 
     return (
@@ -23,80 +48,57 @@ export const LoginFormulario = () => {
             <ScrollView contentContainerStyle={styles.container}>
                 <Text style={styles.title}>Registro</Text>
 
-                <TextInput
-                    style={styles.input}
+                <InputComponent
                     placeholder="Nombre"
-                    value={name}
-                    onChangeText={setName}
+                    keyboardType="default"
+                    changeForm={changeForm}
+                    property="name"
                 />
-                <TextInput
-                    style={styles.input}
+                <InputComponent
                     placeholder="Apellido"
-                    value={lastname}
-                    onChangeText={setLastname}
+                    keyboardType="default"
+                    changeForm={changeForm}
+                    property="lastname"
                 />
-                <TextInput
-                    style={styles.input}
+                <InputComponent
                     placeholder="Correo electrónico"
-                    value={email}
-                    onChangeText={setEmail}
                     keyboardType="email-address"
+                    changeForm={changeForm}
+                    property="email"
                 />
-                <TextInput
-                    style={styles.input}
+                <InputComponent
                     placeholder="Teléfono"
-                    value={phone}
-                    onChangeText={setPhone}
                     keyboardType="phone-pad"
+                    changeForm={changeForm}
+                    property="phone"
                 />
-                <TextInput
-                    style={styles.input}
-                    placeholder="Contraseña"
-                    value={password}
-                    onChangeText={setPassword}
-                    secureTextEntry
-                />
+
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <View style={{ flex: 1 }}>
+                        <InputComponent
+                            placeholder="Contraseña"
+                            keyboardType="default"
+                            changeForm={changeForm}
+                            property="password"
+                            isPassword={hiddenPassword}
+                        />
+                    </View>
+                    <Icon
+                        name={hiddenPassword ? 'visibility' : 'visibility-off'}
+                        size={24}
+                        color="#555"
+                        style={{
+                            position: 'absolute',
+                            right: 10,
+                            top: '50%',
+                            transform: [{ translateY: -12 }]
+                        }}
+                        onPress={() => setHiddenPassword(!hiddenPassword)}
+                    />
+                </View>
 
                 <Button title="Registrarse" onPress={handleRegister} />
             </ScrollView>
         </ImageBackground>
     );
 };
-
-const styles = StyleSheet.create({
-    background: {
-        flex: 1,
-        width: '100%',
-        height: '100%',
-    },
-    darkOverlay: {
-        ...StyleSheet.absoluteFillObject,
-        backgroundColor: 'rgba(0,0,0,0.4)',
-        zIndex: 0,
-    },
-    container: {
-        flexGrow: 1,
-        justifyContent: 'center',
-        padding: 20,
-        zIndex: 1,
-    },
-    title: {
-        fontSize: 28,
-        marginBottom: 30,
-        textAlign: 'center',
-        color: 'white',
-        fontWeight: 'bold',
-        textShadowColor: '#000',
-        textShadowOffset: { width: 1, height: 1 },
-        textShadowRadius: 2,
-    },
-    input: {
-        backgroundColor: 'rgba(255, 255, 255, 0.2)',
-        padding: 12,
-        marginBottom: 20,
-        borderRadius: 10,
-        borderWidth: 1,
-        borderColor: '#ccc',
-        color: 'white'
-    },
-});
