@@ -3,6 +3,10 @@ import { View, Text, Button, ScrollView, ImageBackground, Alert } from 'react-na
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { styles } from '../theme/appTheme';
 import { InputComponent } from '../components/InputComponent';
+import { StackScreenProps } from '@react-navigation/stack';
+import { CommonActions } from '@react-navigation/native';
+
+type Props = StackScreenProps<any, any>;
 
 interface FormRegister {
     name: string;
@@ -12,7 +16,7 @@ interface FormRegister {
     password: string;
 }
 
-export const LoginFormulario = () => {
+export const LoginFormulario = ({ navigation }: Props) => {
     const [formRegister, setFormRegister] = useState<FormRegister>({
         name: '',
         lastname: '',
@@ -84,21 +88,25 @@ export const LoginFormulario = () => {
                         />
                     </View>
                     <Icon
-                        name={hiddenPassword ? 'visibility' : 'visibility-off'}
+                        name={hiddenPassword ? 'visibility-off' : 'visibility'}
                         size={24}
-                        color="#555"
+                        color="#ccc"
                         style={{
                             position: 'absolute',
                             right: 10,
-                            top: '50%',
+                            top: '35%',
                             transform: [{ translateY: -12 }]
                         }}
                         onPress={() => setHiddenPassword(!hiddenPassword)}
                     />
                 </View>
-
                 <Button title="Registrarse" onPress={handleRegister} />
+
             </ScrollView>
+            <View style={{ width: 150, alignSelf: 'center', marginVertical: 10 }}>
+                <Button title='Ir a Iniciar Sesion'
+                    onPress={() => navigation.dispatch(CommonActions.navigate({ name: 'Pantalla1' }))}></Button>
+            </View>
         </ImageBackground>
     );
 };

@@ -1,16 +1,11 @@
 import React, { useState } from 'react';
-import {
-    ImageBackground,
-    Text,
-    View,
-    Button,
-    SafeAreaView,
-    Alert
-} from 'react-native';
+import { ImageBackground, Text, View, Button, SafeAreaView, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { styles } from '../theme/appTheme';
 import { InputComponent } from '../components/InputComponent';
-import { transform } from '@babel/core';
+import { CommonActions, useNavigation } from '@react-navigation/native';
+
+
 
 interface FormLogin {
     email: string;
@@ -18,6 +13,7 @@ interface FormLogin {
 }
 
 export const LoginScreen = () => {
+    const navigation = useNavigation();
     const [formLogin, setFormLogin] = useState<FormLogin>({
         email: '',
         password: ''
@@ -29,12 +25,11 @@ export const LoginScreen = () => {
         setFormLogin({ ...formLogin, [property]: value });
     };
 
-    const handleLogin = (): void  => {
+    const handleLogin = (): void => {
         if (formLogin.email === '' || formLogin.password === '') {
             Alert.alert('Error', 'Por favor, complete todos los campos');
             return;
         }
-        //Alert.alert('Inicio de sesión', `Email: ${formLogin.email}`);
         console.log(formLogin);
     };
 
@@ -66,13 +61,13 @@ export const LoginScreen = () => {
                             />
                         </View>
                         <Icon
-                            name={hiddenPassword ? 'visibility' : 'visibility-off'}
+                            name={hiddenPassword ? 'visibility-off' : 'visibility'}
                             size={24}
                             color="#ccc"
                             style={{
                                 position: 'absolute',
                                 right: 10,
-                                top: '50%',
+                                top: '35%',
                                 transform: [{ translateY: -12 }]
                             }}
                             onPress={() => setHiddenPassword(!hiddenPassword)}
@@ -82,6 +77,10 @@ export const LoginScreen = () => {
                     <Button title="Ingresar" onPress={handleLogin} />
                 </View>
             </SafeAreaView>
+            <View style={{ width: 150, alignSelf: 'center', marginVertical: 10 }}>
+                <Button title='Ir a registro'
+                    onPress={() => navigation.dispatch(CommonActions.navigate({ name: 'Pantalla2' }))}></Button>
+            </View>
         </ImageBackground>
     );
 };
