@@ -1,13 +1,18 @@
 import React, { useState } from 'react';
-import { View, Text, Button, ScrollView, ImageBackground, Alert } from 'react-native';
+import { View, Text, Button, ScrollView, ImageBackground, Alert, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { styles } from '../theme/appTheme';
 import { InputComponent } from '../components/InputComponent';
-import { StackScreenProps } from '@react-navigation/stack';
-import { CommonActions } from '@react-navigation/native';
+import { CommonActions, useNavigation } from '@react-navigation/native';
+import { User } from '../navigator/StackNavigator';
 
-type Props = StackScreenProps<any, any>;
+//interface para las propiedades
+interface Props{
+    users: User[];
+    addUser: (user: User) => void;
+}
 
+//interface objetp del formulario
 interface FormRegister {
     name: string;
     lastname: string;
@@ -16,7 +21,11 @@ interface FormRegister {
     password: string;
 }
 
-export const LoginFormulario = ({ navigation }: Props) => {
+export const LoginFormulario = ({users, addUser}:Props) => {
+    //hook useNavigation permite navegar entre pantallas
+    const navigation = useNavigation();
+
+    //hook useState para manejar el estado del formulario
     const [formRegister, setFormRegister] = useState<FormRegister>({
         name: '',
         lastname: '',
@@ -27,18 +36,53 @@ export const LoginFormulario = ({ navigation }: Props) => {
 
     const [hiddenPassword, setHiddenPassword] = useState(true);
 
-    const changeForm = (property: string, value: string) => {
+    //función para actualizar el estado del formulario
+    const changeForm = (property: string, value: string): void => {
+        //modificar los valores del formulario
         setFormRegister({ ...formRegister, [property]: value });
     };
 
-    const handleRegister = () => {
-        const { name, lastname, email, phone, password } = formRegister;
-        if (!name || !lastname || !email || !phone || !password) {
+    //función para verificar si existe el usuario
+    const verifyUsername = (): User | undefined => {
+        const existUsername = users.find(user => user.username  == formRegister.email);
+        return existUsername;
+    }
+
+    //funcion para generar los ids de los nuevos usuarios
+    const getIdUser = (): number => {
+        const getId = users.length +1;
+        return getId;
+    }
+
+    //Función para registrar
+    const handleSignUp = (): void => {
+        if (formRegister.name == '' || formRegister.lastname == '' || formRegister.email == ''
+            || formRegister.password == '' || formRegister.phone == ''){
             Alert.alert('Error', 'Por favor, complete todos los campos');
             return;
         }
+
+        //Validar que no exista el usuario
+        if(verifyUsername() != undefined) {
+            Alert.alert('Error', 'El usuario ya existe');
+            return;
+        }
+
+        //Crear nuevo usuario - objeto User
+        const newUser: User = {
+            id: getIdUser(),
+            name: formRegister.name,
+            username:formRegister.email,
+            password: formRegister.password
+        }
+
+        //Añadir en el arreglo
+        addUser(newUser);
+        Alert.alert('Éxito', 'Usuario registrado correctamente')
+        //Regresar al login
+        navigation.goBack();
         //Alert.alert('Usuario registrado', `Nombre: ${name} ${lastname}`);
-        console.log(formRegister);
+        //console.log(formRegister);
     };
 
     return (
@@ -49,7 +93,7 @@ export const LoginFormulario = ({ navigation }: Props) => {
         >
             <View style={styles.darkOverlay} />
 
-            <ScrollView contentContainerStyle={styles.container}>
+            <View style={styles.container}>
                 <Text style={styles.title}>Registro</Text>
 
                 <InputComponent
@@ -65,14 +109,14 @@ export const LoginFormulario = ({ navigation }: Props) => {
                     property="lastname"
                 />
                 <InputComponent
-                    placeholder="Correo electrónico"
+                    placeholder="Usuario"
                     keyboardType="email-address"
                     changeForm={changeForm}
                     property="email"
                 />
                 <InputComponent
                     placeholder="Teléfono"
-                    keyboardType="phone-pad"
+                    keyboardType="numeric"
                     changeForm={changeForm}
                     property="phone"
                 />
@@ -100,12 +144,11 @@ export const LoginFormulario = ({ navigation }: Props) => {
                         onPress={() => setHiddenPassword(!hiddenPassword)}
                     />
                 </View>
-                <Button title="Registrarse" onPress={handleRegister} />
-
-            </ScrollView>
-            <View style={{ width: 150, alignSelf: 'center', marginVertical: 10 }}>
-                <Button title='Ir a Iniciar Sesion'
-                    onPress={() => navigation.dispatch(CommonActions.navigate({ name: 'Pantalla1' }))}></Button>
+                <Button title="Registrarse" onPress={handleSignUp} />
+                <TouchableOpacity
+                    onPress={() => navigation.dispatch(CommonActions.navigate({ name: 'Login' }))}>
+                    <Text style={styles.textRedirect}>Ya tienes una cuenta? Iniciar sesión ahora</Text>
+                </TouchableOpacity>
             </View>
         </ImageBackground>
     );
