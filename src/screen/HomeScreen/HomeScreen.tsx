@@ -26,7 +26,7 @@ export interface Cart {
 export const HomeScreen = () => {
     //arreglo con la lista de productos
     const products: Product[] = [
-        { id: 1, name: 'God of War Ragnarök', price: 69.99, stock: 5, pathImage: 'https://static.wikia.nocookie.net/godofwar/images/c/ca/Portada_God_of_War_Ragnarok.png/revision/latest?cb=20211008000423&path-prefix=es' },
+        { id: 1, name: 'God of War Ragnarök', price: 69.99, stock: 5, pathImage: 'https://media.revistagq.com/photos/613b43731df3ece1388a2f67/16:9/w_2560%2Cc_limit/God-of-War-Ragnarok-Featured-image.jpeg' },
         { id: 2, name: 'Marvel Spider-Man 2', price: 59.99, stock: 10, pathImage: 'https://image.api.playstation.com/vulcan/ap/rnd/202306/1219/60eca3ac155247e21850c7d075d01ebf0f3f5dbf19ccd2a1.jpg' },
         { id: 3, name: 'The Last of Us: Remastered', price: 44.99, stock: 3, pathImage: 'https://juegodigitalecuador.com/files/images/productos/1624908503-the-last-of-us-remastered-ps5.jpg' },
         { id: 4, name: 'Astro Bot', price: 29.99, stock: 8, pathImage: 'https://image.api.playstation.com/vulcan/ap/rnd/202406/0500/8f15268257b878597757fcc5f2c9545840867bc71fc863b1.png' },
@@ -53,6 +53,12 @@ export const HomeScreen = () => {
         addProduct(id, quantity);
     }
 
+    //funcion para limpiar el carrito
+    const clearCart = () => {
+        setCart([]);
+        setShowModal(false);
+    }
+
     //funcion para agregar los productos al arreglo del carrito
     const addProduct = (id: number, quantity: number) => {
         const product = productsList.find(product => product.id == id);
@@ -62,18 +68,34 @@ export const HomeScreen = () => {
             return;
         }
 
-        //Crear objeto del producto para el carrito de compras
-        const newProductCart: Cart = {
-            id: product.id,
-            name: product.name,
-            price: product.price,
-            quantity: quantity,
-            total: product.price * quantity
-        }
+        setCart(prevCart => {
+            const existingProduct = prevCart.find(item => item.id === id);
 
-        //Añadir en el arreglo del carrito
-        setCart([...cart, newProductCart]);
-        //console.log(cart);
+            if (existingProduct) {
+                // Si ya existe, actualizamos cantidad y total
+                return prevCart.map(item =>
+                    item.id === id
+                        ? {
+                            ...item,
+                            quantity: item.quantity + quantity,
+                            total: (item.quantity + quantity) * item.price
+                        }
+                        : item
+                );
+            } else {
+                // Si no existe, lo agregamos
+                return [
+                    ...prevCart,
+                    {
+                        id: product.id,
+                        name: product.name,
+                        price: product.price,
+                        quantity: quantity,
+                        total: product.price * quantity
+                    }
+                ];
+            }
+        });
     }
 
 
@@ -82,11 +104,17 @@ export const HomeScreen = () => {
             <View style={styles.containerHeader}>
                 <TitleComponent title='Productos'></TitleComponent>
                 <View style={styles.containerIcon}>
-                    <Text style={styles.textIconCart}>{cart.length}</Text>
-                    <Icon name='shopping-cart'
-                        size={27}
-                        color={'white'}
-                        onPress={()=> setShowModal(!showModal)}></Icon>
+                    {cart.length > 0 && (
+                        <>
+                            <Text style={styles.textIconCart}>{cart.length}</Text>
+                            <Icon
+                                name='shopping-cart'
+                                size={27}
+                                color={'#e93758'}
+                                onPress={() => setShowModal(!showModal)}
+                            />
+                        </>
+                    )}
                 </View>
 
             </View>
@@ -100,7 +128,8 @@ export const HomeScreen = () => {
             </BodyComponent>
             <ModalCart visible={showModal}
                 setShowModal={() => setShowModal(!showModal)}
-                cart={cart}></ModalCart>
+                cart={cart}
+                clearCart={clearCart}></ModalCart>
         </View>
     )
 }
@@ -111,16 +140,17 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center'
     },
-    containerIcon:{
-        flex:1,
-        alignItems:'flex-end',
-        paddingHorizontal:30
+    containerIcon: {
+        flex: 1,
+        alignItems: 'flex-end',
+        paddingHorizontal: 30
     },
-    textIconCart:{
-        backgroundColor: 'white',
-        paddingHorizontal:5,
-        borderRadius:25,
-        fontWeight:'bold',
-        fontSize:12
+    textIconCart: {
+        backgroundColor: '#e93758',
+        color: 'white',
+        paddingHorizontal: 5,
+        borderRadius: 25,
+        fontWeight: 'bold',
+        fontSize: 12
     }
 })

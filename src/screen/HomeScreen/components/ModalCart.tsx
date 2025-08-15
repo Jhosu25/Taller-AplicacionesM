@@ -9,9 +9,10 @@ interface Props {
     visible: boolean;
     setShowModal: () => void;
     cart: Cart[];
+    clearCart:()=> void;
 }
 
-export const ModalCart = ({ visible, setShowModal, cart }: Props) => {
+export const ModalCart = ({ visible, setShowModal, cart, clearCart }: Props) => {
     const { width } = useWindowDimensions();
     //función para mostrar total pagar
     const totalPay = (): number => {
@@ -21,7 +22,7 @@ export const ModalCart = ({ visible, setShowModal, cart }: Props) => {
         })
         return total;
     }
-    
+
     return (
         <Modal visible={visible} animationType='fade' transparent={true}>
             <View style={styles.containerModal}>
@@ -68,7 +69,8 @@ export const ModalCart = ({ visible, setShowModal, cart }: Props) => {
                         </Text>
                     </View>
                     <TouchableOpacity
-                        style={styles.buttonAddCart}>
+                        style={styles.buttonAddCart}
+                        onPress={clearCart}>
                         <Text style={styles.buttonAddCartText}>Comprar</Text>
                     </TouchableOpacity>
                 </View>
