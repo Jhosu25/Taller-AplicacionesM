@@ -54,7 +54,8 @@ export const LoginScreen = ({ users }:Props) => {
             return;
 
         }
-        console.log(formLogin);
+        //console.log(formLogin);
+        navigation.dispatch(CommonActions.navigate({ name:'Home'}))
     };
 
     return (

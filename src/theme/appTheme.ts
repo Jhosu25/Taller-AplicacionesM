@@ -50,6 +50,76 @@ export const styles = StyleSheet.create({
         color: '#ccc',
         textAlign: 'center',
         marginTop: 25
+    },
+    containerModal:{
+        backgroundColor: 'rgba(0,0,0,0.5)',
+        flex:1,
+        justifyContent:'center',
+        alignItems:'center'
+    },
+    modal:{
+        padding: 15,
+        backgroundColor:'white',
+        borderRadius:10
+    },
+    headerModal:{
+        flexDirection: 'row',
+        borderBottomColor: '#ccc',
+        borderBottomWidth: 1,
+        padding: 10
+    },
+    containerIconModal:{
+        flex: 1,
+        alignItems: 'flex-end'
+    },
+    titleModal: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        color: '#251f48'
+    },
+    imageModal: {
+        width: 160,
+        height: 160
+    },
+    containerQuantity: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    buttonQuantity: {
+        height: 50,
+        width: 50,
+        backgroundColor: '#251f48',
+        justifyContent: 'center',
+        alignItems: 'center',
+        margin: 15,
+        borderRadius: 25
+    },
+    buttonQuantityText: {
+        color: 'white',
+        fontSize: 20,
+        fontWeight: 'bold'
+    },
+    textQuantity: {
+        fontSize: 18,
+    },
+    buttonAddCart: {
+        backgroundColor: '#e93758',
+        marginTop: 15,
+        paddingVertical: 10,
+        alignItems: 'center',
+        borderRadius: 5
+    },
+    buttonAddCartText: {
+        color: 'white',
+        fontWeight: 'bold'
+    },
+    textStock:{
+        fontSize: 18,
+        color: '#992E2E',
+        textAlign:'center',
+        fontWeight:'bold',
+        marginTop: 5
     }
 });
 

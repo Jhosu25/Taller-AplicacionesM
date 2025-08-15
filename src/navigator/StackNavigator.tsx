@@ -2,6 +2,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { LoginScreen } from '../screen/LoginScreen';
 import { LoginFormulario } from '../screen/LoginFormulario';
 import { useState } from 'react';
+import { HomeScreen } from '../screen/HomeScreen/HomeScreen';
 
 const Stack = createStackNavigator();
 //interface para los objetos del arreglo
@@ -33,6 +34,7 @@ export const StackNavigator = () => {
         <Stack.Navigator>
             <Stack.Screen name="Login" options={{ headerShown: false }} children={()=> <LoginScreen users={listUsers}/>} />
             <Stack.Screen name="Register" options={{ headerShown: false }} children={()=> <LoginFormulario users={listUsers} addUser={addUser}/>} />
+            <Stack.Screen name="Home" options={{headerShown: false}} component={HomeScreen}/>
         </Stack.Navigator>
     );
 }
